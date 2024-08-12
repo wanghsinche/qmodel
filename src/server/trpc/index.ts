@@ -1,5 +1,4 @@
 import { initTRPC } from '@trpc/server';
-import { groupQDII, sortETFGroup } from '../../service/sort_qdii_with_sector';
 
 /**
  * Initialization of tRPC backend

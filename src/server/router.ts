@@ -1,6 +1,5 @@
 import { groupQDII, sortETFGroup } from '../service/sort_qdii_with_sector';
 import { router, publicProcedure } from './trpc';
-import { z } from 'zod';
 
 
 export const appRouter = router({

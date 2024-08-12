@@ -1,8 +1,8 @@
 import useSWR from 'swr';
 import { client } from '../client';
 import type { inferRouterOutputs } from '@trpc/server';
-import { AppRouter } from '../../../src/server/router';
-import { Collapse, Table, Badge, Space, Typography, Divider } from '@douyinfe/semi-ui';
+import type { AppRouter } from '../../../src/server/router';
+import { Collapse, Table, Badge, Space, Typography, Divider, Skeleton } from '@douyinfe/semi-ui';
 import { useMemo } from 'react';
 import type { ColumnProps } from '@douyinfe/semi-ui/lib/es/table';
 type ETFItem = inferRouterOutputs<AppRouter>['QDIIGrounpedBySector'][0]['etfs'][0];
@@ -15,14 +15,14 @@ function ETFTableView({ etfs }: { etfs: ETFItem[] }) {
         dataIndex: 'name',
         title: 'ETF名称',
     }, {
-        dataIndex: 'premium',
-        title: '溢价率',
-        width: 80,
-    }, {
         dataIndex: 'mt_fee',
         title: '管理费',
         width: 80,
-    }]
+    }, {
+        dataIndex: 'premium',
+        title: '溢价率',
+        width: 80,
+    },]
     return <Table columns={tableData} dataSource={etfs} pagination={false} />
 }
 
@@ -65,12 +65,15 @@ export default function QDIIGrounpedBySector() {
     }), [data])
 
     if (isValidating) {
-        return <div>Loading...</div>
+        return <div>
+            <Skeleton.Title />
+            <Skeleton.Paragraph rows={10} />
+        </div>
     }
 
     return <div className='page'>
         <Introduction />
-        <Divider align="left">QDII ETF 溢价率排名 BY 标的</Divider>
+        <Divider align="left">QDII ETF 溢价率排名 By Index</Divider>
         <Collapse defaultActiveKey={sortedGp?.[0].index} style={{ width: '100%' }}>
             {
                 // print the data
