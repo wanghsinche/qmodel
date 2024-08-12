@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:cloudflare": "wrangler dev",
+    "dev:trpc": "ts-node --project tsconfig.json --files src/server/standalone.ts",
+    "sync:data": "ts-node --project tsconfig.json --files src/scripts/retrieve_everyday.ts"
   },
   "author": "",
   "license": "ISC",
@@ -11,9 +14,12 @@
   "devDependencies": {
     "@types/node": "^22.2.0",
     "ts-node": "^10.9.2",
-    "typescript": "^5.5.4"
+    "typescript": "^5.5.4",
+    "wrangler": "^3.70.0"
   },
   "dependencies": {
+    "@trpc/client": "^11.0.0-rc.477",
+    "@trpc/server": "^11.0.0-rc.477",
     "axios": "^1.7.3"
   }
 }
