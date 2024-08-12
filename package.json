@@ -12,6 +12,7 @@
   "license": "ISC",
   "description": "",
   "devDependencies": {
+    "@types/cors": "^2.8.17",
     "@types/node": "^22.2.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.5.4",
@@ -20,6 +21,7 @@
   "dependencies": {
     "@trpc/client": "^11.0.0-rc.477",
     "@trpc/server": "^11.0.0-rc.477",
-    "axios": "^1.7.3"
+    "axios": "^1.7.3",
+    "cors": "^2.8.5"
   }
 }
