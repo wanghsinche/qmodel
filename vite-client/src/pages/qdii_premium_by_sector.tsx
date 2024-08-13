@@ -9,19 +9,24 @@ type ETFItem = inferRouterOutputs<AppRouter>['QDIIGrounpedBySector'][0]['etfs'][
 
 function ETFTableView({ etfs }: { etfs: ETFItem[] }) {
     const tableData: ColumnProps<ETFItem>[] = [{
-        dataIndex: 'code',
-        title: '代码',
-    }, {
         dataIndex: 'name',
         title: 'ETF名称',
+        width: 120,
     }, {
+        dataIndex: 'price_dt',
+        title: '更新日期',
+        width: 120,
+    },{
+        dataIndex: 'premium',
+        title: '溢价率',
+        width: 80,
+    },{
         dataIndex: 'mt_fee',
         title: '管理费',
         width: 80,
     }, {
-        dataIndex: 'premium',
-        title: '溢价率',
-        width: 80,
+        dataIndex: 'code',
+        title: '代码',
     },]
     return <Table columns={tableData} dataSource={etfs} pagination={false} />
 }
@@ -73,7 +78,7 @@ export default function QDIIGrounpedBySector() {
 
     return <div className='page'>
         <Introduction />
-        <Divider align="left">QDII ETF 溢价率排名 By Index</Divider>
+        <Divider align="left" margin={'16px'}>QDII ETF 溢价率排名 By Index</Divider>
         <Collapse defaultActiveKey={sortedGp?.[0].index} style={{ width: '100%' }}>
             {
                 // print the data

@@ -1,6 +1,6 @@
 cd vite-client
 npm install
-npm run build
+WORKER_URL="qmodel.wanghsinche.workers.dev/trpc" npm run build
 cd ..
 mkdir -p dist
 cp -v -r vite-client/dist/* ./dist
@@ -8,5 +8,5 @@ cp -v -r vite-client/dist/* ./dist
 read -p "Build finished. Press enter to continue"
 source ./.env
 npx wrangler whoami
-npx wrangler deploy ./index.js
+npx wrangler deploy 
 

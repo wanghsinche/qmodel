@@ -1,9 +1,6 @@
-import fs from 'fs';
-import path from 'path';
+import { getStore } from "./store";
+import { retrieveQDIIFromJiSiLu } from "./store_qdii_from_jisilu";
 
-const today = new Date().toDateString()
-
-const dataFolder = path.resolve(__dirname, '../data', today);
 
 type ILooseOBJECT = Record<string, number | string>
 
@@ -14,12 +11,21 @@ interface IGroupItem {
     premium: string;
     last_est_dt: string;
     mt_fee: string;
+    price_dt: string;
 }
 
 
-export function groupQDII() {
-    const qdiiData = fs.readFileSync(path.join(dataFolder, 'QDII_jisilu.json'), 'utf8');
-    const data = JSON.parse(qdiiData);
+export async function groupQDII() {
+    const today = new Date().toDateString()
+    const dataPath = `${today}_QDII_jisilu`;
+
+    let qdiiData = await getStore().get(dataPath);
+    if (!qdiiData) {
+        const result = await retrieveQDIIFromJiSiLu();
+        await getStore().put(dataPath, JSON.stringify(result)||'');
+        qdiiData = await getStore().get(dataPath);
+    }
+    const data = JSON.parse(qdiiData as string);
 
     const QDIIAbstract: Array<IGroupItem> = data.rows.map((row: Record<string, number | string | ILooseOBJECT>) => {
         const cell = row.cell as Record<string, number | string>;
@@ -30,6 +36,7 @@ export function groupQDII() {
             premium: cell.discount_rt as string,
             last_est_dt: cell.last_est_dt as string,
             mt_fee: cell.mt_fee as string,
+            price_dt: cell.price_dt as string
         }
     })
 
@@ -60,12 +67,3 @@ export function sortETFGroup(groups:Record<string, IGroupItem[]>){
 }
 
 
-if (require.main === module) {
-    const gp = groupQDII();
-    const sortedGp = sortETFGroup(gp);
-    // print the value table by key
-    sortedGp.forEach((group) => {
-        console.log(`Index: ${group.index}`);
-        console.table(group.etfs)
-    });
-}

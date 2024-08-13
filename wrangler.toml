@@ -1,11 +1,14 @@
 name = "qmodel"
-type = "javascript"
 
 account_id = "7bd50c584e61b81a2c97f70ef0c3232a"
 workers_dev = true
 compatibility_date = "2024-08-12"
 
+main = "./index.ts"
 
 [site]
 bucket = "./dist" # <-- Add your build directory name here.
 
+[[kv_namespaces]]
+binding = "data_cache"
+id = "69ae5ba02b1f44a1aa756bed70fcfba6"

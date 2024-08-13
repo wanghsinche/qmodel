@@ -8,4 +8,5 @@ const server = createHTTPServer({
   middleware: cors()
 });
 
-server.listen(3000);
+
+server.listen(Number(process.env.TRPC_PORT||'3000'));

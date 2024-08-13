@@ -3,9 +3,10 @@ import { router, publicProcedure } from './trpc';
 
 
 export const appRouter = router({
-    QDIIGrounpedBySector: publicProcedure.query(() => {
-        return sortETFGroup(groupQDII());
-    })
+  QDIIGrounpedBySector: publicProcedure.query(async () => {
+    const gp = await groupQDII()
+    return sortETFGroup(gp);
+  })
   // ...
 });
 
