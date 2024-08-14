@@ -2,6 +2,7 @@ import type { KVNamespace } from '@cloudflare/workers-types';
 
 interface Env {
     data_cache: KVNamespace
+    STRIPE_SECRET_KEY: string
 }
 
 const memoKV = {
@@ -35,11 +36,16 @@ export function initStore(e: Env){
 }
 
 
-export function getStore(){
+export function getKV(){
     if (ctxEnv) {
-        console.info('store is ', ctxEnv.data_cache)
         return ctxEnv.data_cache
     }
-    console.info('memo store')
     return memoKV
+}
+
+export function getEnv(){
+    if (ctxEnv) {
+        return ctxEnv
+    }
+    return process.env
 }

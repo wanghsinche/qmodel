@@ -1,4 +1,4 @@
-import { getStore } from "./store";
+import { getKV } from "./store";
 import { retrieveQDIIFromJiSiLu } from "./store_qdii_from_jisilu";
 
 
@@ -19,11 +19,11 @@ export async function groupQDII() {
     const today = new Date().toDateString()
     const dataPath = `${today}_QDII_jisilu`;
 
-    let qdiiData = await getStore().get(dataPath);
+    let qdiiData = await getKV().get(dataPath);
     if (!qdiiData) {
         const result = await retrieveQDIIFromJiSiLu();
-        await getStore().put(dataPath, JSON.stringify(result)||'');
-        qdiiData = await getStore().get(dataPath);
+        await getKV().put(dataPath, JSON.stringify(result)||'');
+        qdiiData = await getKV().get(dataPath);
     }
     const data = JSON.parse(qdiiData as string);
 

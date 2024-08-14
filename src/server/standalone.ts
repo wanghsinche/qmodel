@@ -2,6 +2,12 @@
 import { appRouter } from './router';
 import { createHTTPServer } from '@trpc/server/adapters/standalone';
 import cors from 'cors';
+import 'dotenv/config'
+
+if (process.env.CODESPACE_NAME) {
+  const url = `https://${process.env.CODESPACE_NAME}-${process.env.TRPC_PORT||'3000'}.${process.env.GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN}`
+  process.env.API_HOST = url
+}
 
 const server = createHTTPServer({
   router: appRouter,

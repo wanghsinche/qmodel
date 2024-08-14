@@ -1,9 +1,10 @@
 // This is your test secret API key.
 import Stripe from 'stripe';
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
+import { getEnv } from './store';
 
-export async function createCheckoutSession(priceId: string, quantity=1) {
-    const YOUR_DOMAIN = process.env.WORKER_URL
+export async function createCheckoutSession(priceId: string, quantity: number, resultURL: string) {
+    const env = getEnv();
+    const stripe = new Stripe(env.STRIPE_SECRET_KEY as string);
 
     const session = await stripe.checkout.sessions.create({
         line_items: [
@@ -14,8 +15,8 @@ export async function createCheckoutSession(priceId: string, quantity=1) {
           },
         ],
         mode: 'payment',
-        success_url: `${YOUR_DOMAIN}?success=true`,
-        cancel_url: `${YOUR_DOMAIN}?canceled=true`,
+        success_url: `${resultURL}?success=true`,
+        cancel_url: `${resultURL}?canceled=true`,
       });
 
       return session.url;

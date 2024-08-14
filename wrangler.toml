@@ -12,3 +12,9 @@ bucket = "./dist" # <-- Add your build directory name here.
 [[kv_namespaces]]
 binding = "data_cache"
 id = "69ae5ba02b1f44a1aa756bed70fcfba6"
+
+[vars]
+STRIPE_SECRET_KEY = "sk_test_51KKl12FMVPfRQBioQCvHXrpNroXH1IpEaTxscLbhgCRaNe40MjeL4ABqQJlpPDJgJr78qMKzUB1DaKEvHUZ9r0MQ00ajpysgBX"
+
+
+

@@ -15,6 +15,10 @@ const router = createBrowserRouter([
   {
     path: '/qdii_premium_by_sector',
     element: <QDIIGrounpedBySector />
+  },
+  {
+    path: '/payment_result',
+    element: <div>Payment Result</div>
   }
 ]);
 

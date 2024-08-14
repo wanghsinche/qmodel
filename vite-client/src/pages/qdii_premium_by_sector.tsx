@@ -5,6 +5,7 @@ import type { AppRouter } from '../../../src/server/router';
 import { Collapse, Table, Badge, Space, Typography, Divider, Skeleton } from '@douyinfe/semi-ui';
 import { useMemo } from 'react';
 import type { ColumnProps } from '@douyinfe/semi-ui/lib/es/table';
+import Buyit from '../components/Buyit';
 type ETFItem = inferRouterOutputs<AppRouter>['QDIIGrounpedBySector'][0]['etfs'][0];
 
 function ETFTableView({ etfs }: { etfs: ETFItem[] }) {
@@ -57,7 +58,9 @@ const Introduction = () => {
         <Typography.Paragraph>
             这种套利策略能在不承担标的资产价格波动风险的情况下,从ETF之间的溢价差异中获利。随着市场效率提高,溢价差异必然收敛,届时平仓即可实现盈利。
         </Typography.Paragraph>
-
+        <Typography.Paragraph >
+            Buy me a coffee: <Buyit />
+        </Typography.Paragraph>
     </Typography>
 }
 

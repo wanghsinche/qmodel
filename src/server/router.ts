@@ -12,9 +12,10 @@ export const appRouter = router({
     z.object({
       priceId: z.string(),
       quantity: z.number().default(1),
+      resultURL: z.string().url(),
     })
-  ).query(async ({ input }) => {
-    const session = await createCheckoutSession(input.priceId, input.quantity);
+  ).mutation(async ({ input }) => {
+    const session = await createCheckoutSession(input.priceId, input.quantity, input.resultURL);
     return { url: session };
   }),
 
