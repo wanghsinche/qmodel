@@ -6,6 +6,9 @@ export const client = createTRPCClient<AppRouter>({
       httpBatchLink({
         url: TRPC_URL,
         // You can pass any HTTP headers you wish here
+        headers: () => ({
+          authentication: `Bearer ${localStorage.getItem('token') || ''}`,
+        })
       }),
     ],
   });

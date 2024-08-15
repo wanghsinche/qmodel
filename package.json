@@ -15,6 +15,7 @@
     "@cloudflare/kv-asset-handler": "^0.3.4",
     "@cloudflare/workers-types": "^4.20240806.0",
     "@types/cors": "^2.8.17",
+    "@types/jsonwebtoken": "^9.0.6",
     "@types/node": "^22.2.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.5.4",
@@ -25,6 +26,7 @@
     "@trpc/server": "^11.0.0-rc.477",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
+    "jsonwebtoken": "^9.0.2",
     "stripe": "^16.7.0"
   }
 }

@@ -3,6 +3,7 @@ import { appRouter } from './router';
 import { createHTTPServer } from '@trpc/server/adapters/standalone';
 import cors from 'cors';
 import 'dotenv/config'
+import { createContext } from './trpc/context';
 
 if (process.env.CODESPACE_NAME) {
   const url = `https://${process.env.CODESPACE_NAME}-${process.env.TRPC_PORT||'3000'}.${process.env.GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN}`
@@ -11,7 +12,8 @@ if (process.env.CODESPACE_NAME) {
 
 const server = createHTTPServer({
   router: appRouter,
-  middleware: cors()
+  middleware: cors(),
+  createContext
 });
 
 

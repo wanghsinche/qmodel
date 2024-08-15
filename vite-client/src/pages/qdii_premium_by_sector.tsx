@@ -6,6 +6,7 @@ import { Collapse, Table, Badge, Space, Typography, Divider, Skeleton } from '@d
 import { useMemo } from 'react';
 import type { ColumnProps } from '@douyinfe/semi-ui/lib/es/table';
 import Buyit from '../components/Buyit';
+import LoginAvatar from '../components/LoginAvatar';
 type ETFItem = inferRouterOutputs<AppRouter>['QDIIGrounpedBySector'][0]['etfs'][0];
 
 function ETFTableView({ etfs }: { etfs: ETFItem[] }) {
@@ -80,6 +81,7 @@ export default function QDIIGrounpedBySector() {
     }
 
     return <div className='page'>
+        <LoginAvatar />
         <Introduction />
         <Divider align="left" margin={'16px'}>QDII ETF 溢价率排名 By Index</Divider>
         <Collapse defaultActiveKey={sortedGp?.[0].index} style={{ width: '100%' }}>

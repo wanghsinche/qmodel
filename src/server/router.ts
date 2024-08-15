@@ -1,6 +1,7 @@
+import { accountValidator, createUserAccount, getUserAccount, loginAccount, signJWT } from '../service/account_service';
 import { groupQDII, sortETFGroup } from '../service/sort_qdii_with_sector';
 import { createCheckoutSession } from '../service/stripe_payment';
-import { router, publicProcedure } from './trpc';
+import { router, publicProcedure, protectedProcedure } from './trpc';
 import z from 'zod';
 
 export const appRouter = router({
@@ -8,7 +9,7 @@ export const appRouter = router({
     const gp = await groupQDII()
     return sortETFGroup(gp);
   }),
-  getCheckoutSession: publicProcedure.input(
+  getCheckoutSession: protectedProcedure.input(
     z.object({
       priceId: z.string(),
       quantity: z.number().default(1),
@@ -18,7 +19,19 @@ export const appRouter = router({
     const session = await createCheckoutSession(input.priceId, input.quantity, input.resultURL);
     return { url: session };
   }),
-
+  register: publicProcedure.input(accountValidator)
+    .mutation(async ({ input }) => {
+      const token  = await createUserAccount(input)
+      return token
+    }),
+  login: publicProcedure.input(accountValidator)
+  .mutation(async ({ input }) => {
+    const token  = await loginAccount(input)
+    return token
+  }),
+  getProfile: protectedProcedure.query(({ ctx }) => {
+    return ctx.user
+  })
   // Add more procedures here
   // ...
 });
