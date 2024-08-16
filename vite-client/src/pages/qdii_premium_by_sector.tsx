@@ -43,7 +43,6 @@ const Introduction = () => {
         <Typography.Paragraph>
             其核心原理为:
         </Typography.Paragraph>
-        <Typography.Paragraph>
             <ul>
                 <li>
                     识别追踪相似海外标的的QDII ETF
@@ -55,7 +54,6 @@ const Introduction = () => {
                     同时卖出<Typography.Text type="warning">溢价较高</Typography.Text>的ETF
                 </li>
             </ul>
-        </Typography.Paragraph>
         <Typography.Paragraph>
             这种套利策略能在不承担标的资产价格波动风险的情况下,从ETF之间的溢价差异中获利。随着市场效率提高,溢价差异必然收敛,届时平仓即可实现盈利。
         </Typography.Paragraph>

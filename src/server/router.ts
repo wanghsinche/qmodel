@@ -1,4 +1,4 @@
-import { accountValidator, createUserAccount, getUserAccount, loginAccount, signJWT } from '../service/account_service';
+import { accountValidator, createUserAccount, loginAccount } from '../service/account_service';
 import { groupQDII, sortETFGroup } from '../service/sort_qdii_with_sector';
 import { createCheckoutSession } from '../service/stripe_payment';
 import { router, publicProcedure, protectedProcedure } from './trpc';

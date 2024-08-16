@@ -5,12 +5,14 @@ import {
 } from "react-router-dom";
 import './App.css'
 import QDIIGrounpedBySector from "./pages/qdii_premium_by_sector";
+import { SWRConfig } from "swr";
+import { Toast } from "@douyinfe/semi-ui";
 
 
 const router = createBrowserRouter([
   {
     path: '/',
-    loader: ()=>redirect('/qdii_premium_by_sector')
+    loader: () => redirect('/qdii_premium_by_sector')
   },
   {
     path: '/qdii_premium_by_sector',
@@ -23,7 +25,14 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  return <RouterProvider router={router} />
+  return <SWRConfig value={{
+    onError: (error) => {
+      Toast.error({ content: String(error) })
+    }
+  }}>
+
+    <RouterProvider router={router} />
+  </SWRConfig>
 }
 
 export default App

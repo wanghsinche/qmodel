@@ -1,7 +1,6 @@
-import { getAccountsDB, getEnv } from './store';
+import { getAccountsDB } from './store';
 import z from 'zod';
-import JWT from 'jsonwebtoken';
-
+import {getPayloadFromSignature, signPayload, verifySignature} from './token';
 export interface IUserAccount {
     id: string
     brithday: string
@@ -55,17 +54,19 @@ export async function createUserAccount(account: IUserAccount) {
 }
 
 export async function signJWT(account: IUserAccount) {
-    return JWT.sign(account, getEnv().STRIPE_SECRET_KEY as string, { expiresIn: '1d' })
+    return signPayload(account.id)
 }
 
 export async function verifyJWT(token: string) {
-    return JWT.verify(token, getEnv().STRIPE_SECRET_KEY as string)
+    return verifySignature(token)
 }
 
 export async function decodeAndVerifyJwtToken(token: string) {
-    const decoded = await verifyJWT(token)
-    if (decoded) {
-        return decoded as IUserAccount
+    const result = await verifyJWT(token)
+    if (result) {
+        const id = getPayloadFromSignature(token)
+        const user = await getUserAccount(id)
+        return user
     }
     return null
 }

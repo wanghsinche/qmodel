@@ -131,3 +131,4 @@ dist
 
 # cloudflare
 .wrangler/
+env.json

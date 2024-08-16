@@ -7,6 +7,7 @@ cp -v -r vite-client/dist/* ./dist
 # ask for comfirmation
 read -p "Build finished. Press enter to continue"
 source ./.env
-npx wrangler whoami
-npx wrangler deploy 
 
+npx wrangler secret bulk < env.json
+npx wrangler whoami 
+npx wrangler deploy 

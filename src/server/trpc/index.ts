@@ -1,4 +1,4 @@
-import { initTRPC } from '@trpc/server';
+import { initTRPC, TRPCError } from '@trpc/server';
 import type { Context } from './context';
 
 /**
@@ -15,7 +15,11 @@ export const router = t.router;
 export const publicProcedure = t.procedure;
 export const protectedProcedure = publicProcedure.use(async ({ ctx, next }) => {
     if (!ctx.user) {
-      throw new Error('Not authenticated');
+      throw new TRPCError({
+        cause: new Error('User not found'),
+        message: 'User not found',
+        code: 'UNAUTHORIZED',
+      });
     }
     return next({ ctx: { ...ctx, user: ctx.user } });
   })
