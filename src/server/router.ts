@@ -1,4 +1,4 @@
-import { accountValidator, createUserAccount, loginAccount } from '../service/account_service';
+import { accountValidator, checkAccountUsed, createUserAccount, loginAccount } from '../service/account_service';
 import { groupQDII, sortETFGroup } from '../service/sort_qdii_with_sector';
 import { createCheckoutSession } from '../service/stripe_payment';
 import { router, publicProcedure, protectedProcedure } from './trpc';
@@ -31,6 +31,9 @@ export const appRouter = router({
   }),
   getProfile: protectedProcedure.query(({ ctx }) => {
     return ctx.user
+  }),
+  checkAccountUsed: publicProcedure.input(z.string()).query(async ({ input }) => {
+    return await checkAccountUsed(input)
   })
   // Add more procedures here
   // ...

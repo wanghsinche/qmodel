@@ -90,3 +90,12 @@ export async function loginAccount(account: IUserAccount) {
         }
     }    
 }
+
+export async function checkAccountUsed(id: string) {
+    const accountsDB = getAccountsDB();
+    const account = await accountsDB.get(id);
+    if (account) {
+        return true
+    }
+    return false
+}
