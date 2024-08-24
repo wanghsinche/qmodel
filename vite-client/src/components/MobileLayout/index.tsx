@@ -80,7 +80,7 @@ const MobileFirstLayout = ({
         {children}
       </Content>
       <Footer className="footer">
-        <Text type="secondary">&copy; {new Date().getFullYear()} Qmodel. All rights reserved.</Text>
+        <Text type="secondary">&copy; {new Date().getFullYear()} QModel. All rights reserved.</Text>
       </Footer>
 
     </Layout>
