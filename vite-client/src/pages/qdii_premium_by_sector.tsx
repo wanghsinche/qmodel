@@ -15,7 +15,7 @@ function ETFTableView({ etfs }: { etfs: ETFItem[] }) {
         title: 'ETF名称',
         width: 120,
         render: (_, record) =>
-            <Link to={`/qdii_detail/${record.code}`} >
+            <Link to={`/qdii_detail/${record.code}/${record.name}`} >
                 <Typography.Text>{record.name}  </Typography.Text>
                 <Typography.Text>{record.code}  </Typography.Text>
             </Link>
@@ -24,7 +24,7 @@ function ETFTableView({ etfs }: { etfs: ETFItem[] }) {
         title: '更新日期',
         width: 120,
         render: (v, record) =>
-            <Link to={`/qdii_detail/${record.code}`} >
+            <Link to={`/qdii_detail/${record.code}/${record.name}`} >
                 <Typography.Text>{v}  </Typography.Text>
             </Link>
     }, {
@@ -32,7 +32,7 @@ function ETFTableView({ etfs }: { etfs: ETFItem[] }) {
         title: '溢价率',
         width: 80,
         render: (v, record) =>
-            <Link to={`/qdii_detail/${record.code}`} >
+            <Link to={`/qdii_detail/${record.code}/${record.name}`} >
                 <Typography.Text>{v}  </Typography.Text>
             </Link>
     }, {
@@ -40,7 +40,7 @@ function ETFTableView({ etfs }: { etfs: ETFItem[] }) {
         title: '管理费',
         width: 80,
         render: (v, record) =>
-            <Link to={`/qdii_detail/${record.code}`} >
+            <Link to={`/qdii_detail/${record.code}/${record.name}`} >
                 <Typography.Text>{v}  </Typography.Text>
             </Link>
     }]

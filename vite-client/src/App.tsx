@@ -20,7 +20,7 @@ const router = createBrowserRouter([
     element: <MobileFirstLayout title={'QDII ETF 溢价率排名 By Sector'} showBack={false} ><QDIIGrounpedBySector /></MobileFirstLayout>
   },
   {
-    path: '/qdii_detail/:code',
+    path: '/qdii_detail/:code/:name',
     element:<MobileFirstLayout title={'QDII ETF 详情'}><QDIIDetail /></MobileFirstLayout>
   },
   {

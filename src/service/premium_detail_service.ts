@@ -1,6 +1,7 @@
 // setup imports
 import { format, parse } from 'date-fns';
 import { getKV } from './store';
+import { getQDIIAbstract } from './sort_qdii_with_sector';
 
 const prefix = 'premium_detail_';
 
@@ -61,4 +62,10 @@ export const getPremiumDetail = async (code:string, start:Date, end:Date) => {
   const closePrice = await getClosePriceFromSohu(code, start, end);
   const netValue = await getNetValueFromTencent(code, start, end);
   return calculatePremium(closePrice, netValue);
+}
+
+export async function getETFProfile(code:string) {
+  const groupData = await getQDIIAbstract();
+  const etf = groupData.find(item => item.code === code);
+  return etf
 }

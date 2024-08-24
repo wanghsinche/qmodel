@@ -12,10 +12,11 @@ interface IGroupItem {
     last_est_dt: string;
     mt_fee: string;
     price_dt: string;
+    profile_url: string;
+    issuer_nm: string;
 }
 
-
-export async function groupQDII() {
+export async function getQDIIAbstract(){
     const today = new Date().toDateString()
     const dataPath = `${today}_QDII_jisilu`;
 
@@ -36,9 +37,19 @@ export async function groupQDII() {
             premium: cell.discount_rt as string,
             last_est_dt: cell.last_est_dt as string,
             mt_fee: cell.mt_fee as string,
-            price_dt: cell.price_dt as string
+            price_dt: cell.price_dt as string,
+            profile_url: cell.urls as string,
+            issuer_nm: cell.issuer_nm as string
         }
     })
+
+    return QDIIAbstract
+}
+
+export async function groupQDII() {
+    
+
+    const QDIIAbstract = await getQDIIAbstract()
 
     const groupedETFs = QDIIAbstract.reduce((groups: Record<string, IGroupItem[]>, etf) => {
         const index = etf.index_nm;

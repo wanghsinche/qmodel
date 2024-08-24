@@ -1,5 +1,5 @@
 import { accountValidator, checkAccountUsed, createUserAccount, loginAccount } from '../service/account_service';
-import { getPremiumDetail } from '../service/premium_detail_service';
+import { getETFProfile, getPremiumDetail } from '../service/premium_detail_service';
 import { groupQDII, sortETFGroup } from '../service/sort_qdii_with_sector';
 import { createCheckoutSession } from '../service/stripe_payment';
 import { router, publicProcedure, protectedProcedure } from './trpc';
@@ -40,6 +40,9 @@ export const appRouter = router({
     input: { code, start, end }
   }) => {
     return await getPremiumDetail(code, start, end)
+  }),
+  getQDIIProfile: publicProcedure.input(z.string()).query(async ({ input }) => {
+    return await getETFProfile(input)
   })
   // Add more procedures here
   // ...

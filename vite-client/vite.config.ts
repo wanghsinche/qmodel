@@ -5,7 +5,7 @@ const getBaseUrl = () => {
   if (process.env.WORKER_URL) {
     console.info(`Worker URL: ${process.env.WORKER_URL}`);
     // reference for vercel.com
-    return `https://${process.env.WORKER_URL}`;
+    return process.env.WORKER_URL;
   }
 
   if (process.env.CODESPACE_NAME) {
