@@ -1,4 +1,4 @@
-import { Avatar, Modal, Form, Button, Toast, Popconfirm, Space, ButtonGroup } from '@douyinfe/semi-ui';
+import { Avatar, Modal, Form, Button, Toast, Popconfirm, Space } from '@douyinfe/semi-ui';
 import { client } from '../client';
 import useSWRMutation from 'swr/mutation'
 import swr from 'swr'
@@ -50,7 +50,7 @@ function LoginModal({ visible, onSuccess, onClose }: ILoginModalProps) {
 
 
 
-    return <Modal visible={visible} footer={null} maskClosable={false} closable={false}  >
+    return <Modal visible={visible} footer={null} maskClosable={false} closable={false} width={'100vw'} style={{ maxWidth: '500px' }}>
         <Form
 
             getFormApi={(api) => formAPIRef.current = api}
@@ -65,14 +65,17 @@ function LoginModal({ visible, onSuccess, onClose }: ILoginModalProps) {
 
             }} disabled={isLoading}>
             <Form.Input field="id" placeholder="邮箱" noLabel onBlur={(e) => setAccountId(e.target.value)} rules={[{ required: true }]} fieldStyle={{ paddingBottom: 0 }} noErrorMessage />
-            <Form.DatePicker field="brithday" placeholder="出生日期" noLabel rules={[{ required: true }]} style={{ width: '100%' }} noErrorMessage />
+            <Form.DatePicker field="brithday" placeholder="出生日期" noLabel rules={[{ required: true }]} style={{ width: '100%', }} noErrorMessage />
             <Space style={{ width: '100%' }}>
                 <Button loading={isLoading}  onClick={() => {
                     formAPIRef.current?.reset();
                     onClose?.()
                 }}>取消</Button>
                 {userExisting && <Button type="primary" theme="solid"  loading={isLoading} htmlType='submit' >进入系统</Button>}
-                {!userExisting && <Popconfirm content="确认邮箱和生日，一旦注册，无法修改" onConfirm={() => {
+                {!userExisting && <Popconfirm content="确认邮箱和生日，一旦注册，无法修改" 
+                style={{width: '60vw', maxWidth: 300}}
+                position='bottomLeft'  
+                onConfirm={() => {
                     formAPIRef.current?.submitForm()
                 }}>
 
@@ -119,9 +122,9 @@ export default function LoginAvatar() {
     }
 
     return <div>
-        {!notLogin && <Space style={{ display: 'flex', flexDirection: 'row-reverse' }}>
-            <Button type="tertiary" onClick={logout} theme='borderless' >退出</Button>
-            <Avatar size="small" color='lime'>{profile?.id.slice(0, 2)}</Avatar>
+        {!notLogin && <Space style={{ display: 'flex' }}>
+            <Button type="tertiary" onClick={logout} theme='borderless' >⏏</Button>
+            <Avatar size="small" color='red'>{profile?.id.slice(0, 2)}</Avatar>
         </Space>}
         {notLogin && <Avatar size="small" color='grey' onClick={() => setShowLogin(true)}>N</Avatar>}
         <LoginModal onSuccess={() => mutate()} visible={showLogin} onClose={() => setShowLogin(false)} />

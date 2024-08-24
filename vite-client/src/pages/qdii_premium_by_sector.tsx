@@ -5,7 +5,6 @@ import type { AppRouter } from '../../../src/server/router';
 import { Collapse, Table, Badge, Space, Typography, Divider, Skeleton } from '@douyinfe/semi-ui';
 import { useMemo } from 'react';
 import type { ColumnProps } from '@douyinfe/semi-ui/lib/es/table';
-import Buyit from '../components/Buyit';
 import { Link } from 'react-router-dom';
 
 type ETFItem = inferRouterOutputs<AppRouter>['QDIIGrounpedBySector'][0]['etfs'][0];
@@ -14,7 +13,7 @@ function ETFTableView({ etfs }: { etfs: ETFItem[] }) {
     const tableData: ColumnProps<ETFItem>[] = [{
         dataIndex: 'name',
         title: 'ETF名称',
-        // width: 120,
+        width: 120,
         render: (_, record) =>
             <Link to={`/qdii_detail/${record.code}`} >
                 <Typography.Text>{record.name}  </Typography.Text>
@@ -33,7 +32,7 @@ function ETFTableView({ etfs }: { etfs: ETFItem[] }) {
         title: '管理费',
         width: 80,
     }]
-    return <Table columns={tableData} dataSource={etfs} pagination={false} />
+    return <Table columns={tableData} dataSource={etfs} pagination={false}  />
 }
 
 const Introduction = () => {

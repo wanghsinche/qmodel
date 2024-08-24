@@ -28,7 +28,7 @@ const MobileFirstLayout = ({
     onBack();
   };
 
-  const { data: profile, isLoading } = useSWR('profile', async () => {
+  const { data: profile } = useSWR('profile', async () => {
     const jwt = window.localStorage.getItem('token')
     if (!jwt) {
         return null
