@@ -43,21 +43,20 @@ export default function QDIIDetail() {
     const oneYearAgo = subDays(new Date(), 365)
     const now = new Date()
     const { data, isValidating } = useSWR(code && ['/api/qdii_detail', code], async () => {
-        // await new Promise(resolve => setTimeout(resolve, 5000))
+        await new Promise(resolve => setTimeout(resolve, 5000))
         return client.getQDIIPremium.query({ code: code as string, start: oneYearAgo, end: now })
+    }, {
+        revalidateOnFocus: false
     });
 
-    if (isValidating) {
-        return <Skeleton placeholder={
-            <>
-                <Skeleton.Paragraph rows={1} />
-                <Skeleton.Image style={{ width: '50vw', height: '30vw', margin: '10px auto' }} />
-                <Skeleton.Paragraph rows={1} />
-                <Skeleton.Image style={{ width:'50vw', height: '30vw', margin: '10px auto' }} />
-            </>
-        } style={{ width: '100vw' }} loading={true}></Skeleton>
+    const loadingDom = <Skeleton placeholder={
+        <>
+            <Skeleton.Paragraph rows={1} />
+            <Skeleton.Image style={{ width: '50vw', height: '30vw', margin: '10px auto' }} />
+        </>
+    } style={{ width: '50vw', margin: '10px auto' }} loading={true}></Skeleton>
 
-    }
+
 
     const histogramDataset = calculateHistogram(data?.map(item => item.premium) as number[], 0.001).map(item => ({ premium: item.binStart, count: item.count }))
 
@@ -82,7 +81,7 @@ export default function QDIIDetail() {
     }, { premium: '0', count: 0 })
 
 
-    return <div style={{ padding:'4px 16px 8px 16px' }}>
+    return <div style={{ padding: '4px 16px 8px 16px', margin: '0 auto', width: '100%' }}>
         <Typography.Title heading={2}>QDII 代码: {code}</Typography.Title>
 
         <Typography.Paragraph>当前溢价: {currentPremium}</Typography.Paragraph>
@@ -90,8 +89,8 @@ export default function QDIIDetail() {
 
 
         <Typography.Title heading={3}>历史溢价</Typography.Title>
-        <ResponsiveContainer aspect={5/3}>
-            <LineChart  data={lineDataset} height={300} width={500}>
+         {isValidating? loadingDom : <ResponsiveContainer width={'100%'} height={300} >
+            <LineChart data={lineDataset} height={300} width={500}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="date" tickCount={5} tickFormatter={date => format(new Date(date), 'yyyy-MM-dd')} />
                 <YAxis />
@@ -100,10 +99,10 @@ export default function QDIIDetail() {
                 <Line dataKey="premium" stroke="var( --semi-color-tertiary-active)" dot={false} />
             </LineChart>
 
-        </ResponsiveContainer>
+        </ResponsiveContainer>}
 
         <Typography.Title heading={3}>溢价直方图</Typography.Title>
-        <ResponsiveContainer aspect={5/3}>
+         {isValidating? loadingDom : <ResponsiveContainer width={'100%'} height={300} >
             <BarChart data={histogramDataset} height={300} width={500} >
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="premium" tickCount={5} />
@@ -116,6 +115,6 @@ export default function QDIIDetail() {
                 <ReferenceLine x={currentPremiumBin.premium} stroke='var(--semi-color-warning)' label='当前溢价' />
 
             </BarChart>
-            </ResponsiveContainer>
+        </ResponsiveContainer>}
     </div>
 }

@@ -40,7 +40,7 @@ const getClosePriceFromSohu = async (code:string, start:Date, end:Date) => {
   const jsonStr = await getFromCacheOrUrl(url);
 
 
-  const data = eval(jsonStr); // slice to remove callback wrapper
+  const data = JSON.parse(jsonStr); // slice to remove callback wrapper
   return data[0].hq.map((item:[string, string, string]) => [item[0].replace(/-/g, ''), parseFloat(item[1])]) as [string, number, number][];
 };
 

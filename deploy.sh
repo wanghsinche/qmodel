@@ -6,7 +6,7 @@ rm -fr dist
 mkdir -p dist
 cp -v -r vite-client/dist/* ./dist
 # ask for comfirmation
-read -p "Build finished. Press enter to continue"
+# read -p "Build finished. Press enter to continue"
 source ./.env
 
 npx wrangler secret bulk < env.json
