@@ -43,7 +43,7 @@ export default function QDIIDetail() {
     const oneYearAgo = subDays(new Date(), 365)
     const now = new Date()
     const { data, isValidating } = useSWR(code && ['/api/qdii_detail', code], async () => {
-        await new Promise(resolve => setTimeout(resolve, 5000))
+        // await new Promise(resolve => setTimeout(resolve, 5000))
         return client.getQDIIPremium.query({ code: code as string, start: oneYearAgo, end: now })
     }, {
         revalidateOnFocus: false
