@@ -92,7 +92,7 @@ export default function QDIIGrounpedBySector() {
 
     return <div className='page'>
         <Introduction />
-        <Divider align="left" margin={'16px'}>QDII ETF 溢价率排名 By Index</Divider>
+        <Divider align="left" margin={'16px'}>QDII ETF 溢价率排名 Grouped By 标的指数</Divider>
         <Collapse defaultActiveKey={sortedGp?.[0].index} style={{ width: '100%' }}>
             {
                 // print the data

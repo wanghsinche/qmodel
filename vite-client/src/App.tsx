@@ -9,6 +9,7 @@ import { SWRConfig } from "swr";
 import { Toast } from "@douyinfe/semi-ui";
 import QDIIDetail from "./pages/qdii_detail";
 import MobileFirstLayout from "./components/MobileLayout";
+// import Logo from "./components/logo";
 
 const router = createBrowserRouter([
   {
@@ -17,11 +18,11 @@ const router = createBrowserRouter([
   },
   {
     path: '/qdii_premium_by_sector',
-    element: <MobileFirstLayout title={'QDII ETF 溢价率排名 By Sector'} showBack={false} ><QDIIGrounpedBySector /></MobileFirstLayout>
+    element: <MobileFirstLayout title={TITLE} showBack={false} ><QDIIGrounpedBySector /></MobileFirstLayout>
   },
   {
     path: '/qdii_detail/:code/:name',
-    element:<MobileFirstLayout title={'QDII ETF 详情'}><QDIIDetail /></MobileFirstLayout>
+    element:<MobileFirstLayout title={'QDII 溢价详情'}><QDIIDetail /></MobileFirstLayout>
   },
   {
     path: '/payment_result',

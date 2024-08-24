@@ -6,13 +6,14 @@ import LoginAvatar from '../LoginAvatar';
 import Buyit from '../Buyit';
 import useSWR from 'swr';
 import { client } from '../../client';
+import { ReactNode } from 'react';
 const { Header, Content, Footer } = Layout;
 const { Text } = Typography;
 
 interface IProps {
   children?: React.ReactNode;
   onBack?: () => void;
-  title?: string;
+  title?: ReactNode;
   showBack?: boolean;
 }
 const MobileFirstLayout = ({
@@ -80,7 +81,7 @@ const MobileFirstLayout = ({
         {children}
       </Content>
       <Footer className="footer">
-        <Text type="secondary">&copy; {new Date().getFullYear()} QModel. All rights reserved.</Text>
+        <Text type="secondary">&copy; {new Date().getFullYear()} {TITLE}. All rights reserved.</Text>
       </Footer>
 
     </Layout>

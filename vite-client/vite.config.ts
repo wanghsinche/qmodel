@@ -26,5 +26,6 @@ export default defineConfig({
   plugins: [react()],
   define: {
     TRPC_URL: JSON.stringify(getBaseUrl()),
+    TITLE: JSON.stringify('QModel 轻策略'),
   }
 })
