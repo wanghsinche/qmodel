@@ -1,6 +1,6 @@
 cd vite-client
 npm install
-WORKER_URL="qmodel.wanghsinche.workers.dev/trpc" npm run build
+WORKER_URL="/trpc" npm run build
 cd ..
 rm -fr dist
 mkdir -p dist

@@ -81,7 +81,7 @@ export default function QDIIDetail() {
     }, { premium: '0', count: 0 })
 
 
-    return <div style={{ padding: '4px 16px 8px 16px', margin: '0 auto', width: '100%' }}>
+    return <div style={{ padding: '4px 16px 8px 16px', margin: '0 auto', width: '80%' }}>
         <Typography.Title heading={2}>QDII 代码: {code}</Typography.Title>
 
         <Typography.Paragraph>当前溢价: {currentPremium}</Typography.Paragraph>
@@ -110,7 +110,6 @@ export default function QDIIDetail() {
                 <Tooltip />
                 <Legend />
                 <Bar dataKey="count" fill="var( --semi-color-tertiary-active)" />
-                {/* mark the current data */}
 
                 <ReferenceLine x={currentPremiumBin.premium} stroke='var(--semi-color-warning)' label='当前溢价' />
 

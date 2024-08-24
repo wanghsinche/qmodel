@@ -23,14 +23,26 @@ function ETFTableView({ etfs }: { etfs: ETFItem[] }) {
         dataIndex: 'price_dt',
         title: '更新日期',
         width: 120,
+        render: (v, record) =>
+            <Link to={`/qdii_detail/${record.code}`} >
+                <Typography.Text>{v}  </Typography.Text>
+            </Link>
     }, {
         dataIndex: 'premium',
         title: '溢价率',
         width: 80,
+        render: (v, record) =>
+            <Link to={`/qdii_detail/${record.code}`} >
+                <Typography.Text>{v}  </Typography.Text>
+            </Link>
     }, {
         dataIndex: 'mt_fee',
         title: '管理费',
         width: 80,
+        render: (v, record) =>
+            <Link to={`/qdii_detail/${record.code}`} >
+                <Typography.Text>{v}  </Typography.Text>
+            </Link>
     }]
     return <Table columns={tableData} dataSource={etfs} pagination={false}  />
 }
