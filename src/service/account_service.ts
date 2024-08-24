@@ -1,4 +1,4 @@
-import { getAccountsDB } from './store';
+import { getDB } from './store';
 import z from 'zod';
 import {getPayloadFromSignature, signPayload, verifySignature} from './token';
 export interface IUserAccount {
@@ -19,7 +19,7 @@ export const accountValidator = z.object({
   
 
 export async function getUserAccount(id: string) {
-    const accountsDB = getAccountsDB();
+    const accountsDB = getDB('account');
     const account = await accountsDB.get(id);
     if (account) {
         return JSON.parse(account) as IUserAccount
@@ -28,7 +28,7 @@ export async function getUserAccount(id: string) {
 }
 
 export async function isExistUserAccount(id: string) {
-    const accountsDB = getAccountsDB();
+    const accountsDB = getDB('account');
     const account = await accountsDB.get(id);
     if (account) {
         return true
@@ -38,7 +38,7 @@ export async function isExistUserAccount(id: string) {
 
 export async function updateUserAccount(id: string, account: IUserAccount) {
     accountValidator.parse(account)
-    const accountsDB = getAccountsDB();
+    const accountsDB = getDB('account');
     await accountsDB.put(id, JSON.stringify(account))
 }
 
@@ -47,7 +47,7 @@ export async function createUserAccount(account: IUserAccount) {
     if (await isExistUserAccount(account.id)) {
         throw new Error('User already exists')
     }
-    const accountsDB = getAccountsDB();
+    const accountsDB = getDB('account');
     await accountsDB.put(account.id, JSON.stringify(account))
     const token = await signJWT(account)
     return token
@@ -92,7 +92,7 @@ export async function loginAccount(account: IUserAccount) {
 }
 
 export async function checkAccountUsed(id: string) {
-    const accountsDB = getAccountsDB();
+    const accountsDB = getDB('account');
     const account = await accountsDB.get(id);
     if (account) {
         return true

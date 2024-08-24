@@ -1,4 +1,5 @@
 import { accountValidator, checkAccountUsed, createUserAccount, loginAccount } from '../service/account_service';
+import { getPremiumDetail } from '../service/premium_detail_service';
 import { groupQDII, sortETFGroup } from '../service/sort_qdii_with_sector';
 import { createCheckoutSession } from '../service/stripe_payment';
 import { router, publicProcedure, protectedProcedure } from './trpc';
@@ -9,7 +10,7 @@ export const appRouter = router({
     const gp = await groupQDII()
     return sortETFGroup(gp);
   }),
-  getCheckoutSession: protectedProcedure.input(
+  getCheckoutSession: publicProcedure.input(
     z.object({
       priceId: z.string(),
       quantity: z.number().default(1),
@@ -34,6 +35,11 @@ export const appRouter = router({
   }),
   checkAccountUsed: publicProcedure.input(z.string()).query(async ({ input }) => {
     return await checkAccountUsed(input)
+  }),
+  getQDIIPremium: publicProcedure.input(z.object({ code: z.string(), start: z.date(), end: z.date() })).query(async ({
+    input: { code, start, end }
+  }) => {
+    return await getPremiumDetail(code, start, end)
   })
   // Add more procedures here
   // ...

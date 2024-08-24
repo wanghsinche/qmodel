@@ -1,0 +1,32 @@
+.mobile-first-layout {
+    height: 100vh;
+  }
+  
+  .navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+  }
+  
+  .content {
+    padding: 24px;
+    margin-top: 60px;
+  }
+  
+  @media (min-width: 768px) {
+    .content {
+      max-width: 750px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+
+  .footer {
+    flex-shrink: 0;
+    text-align: center;
+    padding: 20px;
+    background-color: var(--semi-color-bg-1);
+  }
+  

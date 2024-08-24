@@ -21,6 +21,6 @@ export default function Buyit({ priceId = 'price_1N2XoVFMVPfRQBio0ssgiFga' }: IP
     })
 
     return (
-        <Button type="primary" loading={isMutating} onClick={() => createCheckoutSessionMutation()}>Buy It</Button>
+        <Button type="primary" style={{color: 'var(--semi-orange-3)'}} loading={isMutating} onClick={() => createCheckoutSessionMutation()}>赞助我</Button>
     )
 }

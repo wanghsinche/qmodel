@@ -6,30 +6,33 @@ import { Collapse, Table, Badge, Space, Typography, Divider, Skeleton } from '@d
 import { useMemo } from 'react';
 import type { ColumnProps } from '@douyinfe/semi-ui/lib/es/table';
 import Buyit from '../components/Buyit';
-import LoginAvatar from '../components/LoginAvatar';
+import { Link } from 'react-router-dom';
+
 type ETFItem = inferRouterOutputs<AppRouter>['QDIIGrounpedBySector'][0]['etfs'][0];
 
 function ETFTableView({ etfs }: { etfs: ETFItem[] }) {
     const tableData: ColumnProps<ETFItem>[] = [{
         dataIndex: 'name',
         title: 'ETF名称',
-        width: 120,
+        // width: 120,
+        render: (_, record) =>
+            <Link to={`/qdii_detail/${record.code}`} >
+                <Typography.Text>{record.name}  </Typography.Text>
+                <Typography.Text>{record.code}  </Typography.Text>
+            </Link>
     }, {
         dataIndex: 'price_dt',
         title: '更新日期',
         width: 120,
-    },{
+    }, {
         dataIndex: 'premium',
         title: '溢价率',
         width: 80,
-    },{
+    }, {
         dataIndex: 'mt_fee',
         title: '管理费',
         width: 80,
-    }, {
-        dataIndex: 'code',
-        title: '代码',
-    },]
+    }]
     return <Table columns={tableData} dataSource={etfs} pagination={false} />
 }
 
@@ -43,23 +46,21 @@ const Introduction = () => {
         <Typography.Paragraph>
             其核心原理为:
         </Typography.Paragraph>
-            <ul>
-                <li>
-                    识别追踪相似海外标的的QDII ETF
-                </li>
-                <li>
-                    买入 <Typography.Text type="success">溢价较低</Typography.Text> 的ETF
-                </li>
-                <li>
-                    同时卖出<Typography.Text type="warning">溢价较高</Typography.Text>的ETF
-                </li>
-            </ul>
+        <ul>
+            <li>
+                识别追踪相似海外标的的QDII ETF
+            </li>
+            <li>
+                买入 <Typography.Text type="success">溢价较低</Typography.Text> 的ETF
+            </li>
+            <li>
+                同时卖出<Typography.Text type="warning">溢价较高</Typography.Text>的ETF
+            </li>
+        </ul>
         <Typography.Paragraph>
             这种套利策略能在不承担标的资产价格波动风险的情况下,从ETF之间的溢价差异中获利。随着市场效率提高,溢价差异必然收敛,届时平仓即可实现盈利。
         </Typography.Paragraph>
-        <Typography.Paragraph >
-            Buy me a coffee: <Buyit />
-        </Typography.Paragraph>
+        
     </Typography>
 }
 
@@ -72,14 +73,13 @@ export default function QDIIGrounpedBySector() {
     }), [data])
 
     if (isValidating) {
-        return <div>
+        return <Skeleton loading style={{ width: '50vw' }} >
             <Skeleton.Title />
             <Skeleton.Paragraph rows={10} />
-        </div>
+        </Skeleton>
     }
 
     return <div className='page'>
-        <LoginAvatar />
         <Introduction />
         <Divider align="left" margin={'16px'}>QDII ETF 溢价率排名 By Index</Divider>
         <Collapse defaultActiveKey={sortedGp?.[0].index} style={{ width: '100%' }}>

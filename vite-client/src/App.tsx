@@ -7,7 +7,8 @@ import './App.css'
 import QDIIGrounpedBySector from "./pages/qdii_premium_by_sector";
 import { SWRConfig } from "swr";
 import { Toast } from "@douyinfe/semi-ui";
-
+import QDIIDetail from "./pages/qdii_detail";
+import MobileFirstLayout from "./components/MobileLayout";
 
 const router = createBrowserRouter([
   {
@@ -16,7 +17,11 @@ const router = createBrowserRouter([
   },
   {
     path: '/qdii_premium_by_sector',
-    element: <QDIIGrounpedBySector />
+    element: <MobileFirstLayout title={'QDII ETF 溢价率排名 By Sector'} showBack={false} ><QDIIGrounpedBySector /></MobileFirstLayout>
+  },
+  {
+    path: '/qdii_detail/:code',
+    element:<MobileFirstLayout title={'QDII ETF 详情'}><QDIIDetail /></MobileFirstLayout>
   },
   {
     path: '/payment_result',

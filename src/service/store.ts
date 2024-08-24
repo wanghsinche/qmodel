@@ -32,9 +32,34 @@ export function getEnv(){
     return process.env
 }
 
-export function getAccountsDB(){
-    if (ctxEnv) {
-        return ctxEnv.accounts_db
+function addNamespacePrefixToFunctionParam(namespace:string) {
+    return (kv:KVNamespace|MemoKV)=>{
+        // add namespace prefix 
+        function get(key:string) {
+            return kv.get(`${namespace}::${key}`)
+        }
+
+        function put(key:string, value:string) {
+            return kv.put(`${namespace}::${key}`, value)
+        }
+        
+        function deleteFn(key:string) {
+            return kv.delete(`${namespace}::${key}`)
+        }
+
+        return {
+            get,
+            put,
+            delete: deleteFn
+        }
     }
-    return memoAccountDB
 }
+
+export function getDB(namespace: 'account'|'product'){
+    const prefixFN = addNamespacePrefixToFunctionParam(namespace)
+    if (ctxEnv) {
+        return prefixFN(ctxEnv.accounts_db)
+    }
+    return prefixFN(memoAccountDB)
+}
+
