@@ -39,8 +39,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: ${{ github.ref }}
-        release_name: Release ${{ github.ref }}
+        tag_name: qdii-premium-nasdaq100
+        release_name: nasdaq100 ${{ format('{0:yyyy-MM-dd}', now()) }}
         draft: false
         prerelease: false
         
