@@ -19,6 +19,11 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     
+    - name: Get current date
+      id: date
+      run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+
+    
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
@@ -40,7 +45,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         tag_name: qdii-premium-nasdaq100
-        release_name: nasdaq100 ${{ format('{0:yyyy-MM-dd}', now()) }}
+        release_name: nasdaq100 ${{ steps.date.outputs.date }}
         draft: false
         prerelease: false
         
