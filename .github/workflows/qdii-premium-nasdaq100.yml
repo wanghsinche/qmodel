@@ -41,7 +41,29 @@ jobs:
     - name: List everything
       run: |
         ls -al
-      
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: output-files
+        path: |
+          myorders.csv
+          mystats.csv
+          other_stats.csv
+          result.png
+    
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Get current date
+      id: date
+      run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+
+
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
@@ -53,6 +75,11 @@ jobs:
         draft: false
         prerelease: false
         
+    - name: Download artifacts
+      uses: actions/download-artifact@v2
+      with:
+        name: output-files
+
     - name: Upload myorders
       uses: actions/upload-release-asset@v1
       env:
