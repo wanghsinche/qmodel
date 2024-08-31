@@ -131,7 +131,6 @@ returns = strategy.analyzers.returns.get_analysis()
 
 with open('other_stats.csv', 'w') as other_stats:
     other_stats.write(f"""Data: {start_date} - {end_date}
-Commission: {round(strategy.broker.comminfo.percent, 2)}
 Sharpe Ratio: {round(sharpe_ratio, 2)}
 Total Trades: {trade_analyzer['total']}
 Total Returns: {round(returns['rtot'] * 100, 2)}%
