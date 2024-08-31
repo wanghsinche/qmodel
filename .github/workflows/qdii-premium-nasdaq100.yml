@@ -109,3 +109,14 @@ jobs:
         asset_path: other_stats.csv
         asset_name: nasdaq100-other_stats.csv
         asset_content_type: text/plain
+
+    - name: Upload result.png
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: result.png
+        asset_name: nasdaq100-result.png
+        asset_content_type: image/png
+
