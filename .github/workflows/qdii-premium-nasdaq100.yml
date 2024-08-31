@@ -1,9 +1,11 @@
 # This workflow will run the backtesting of QDII premium arbitrary strategy, save the result to release
-name: [backtesting]qdii-premium-nasdaq100
+name: backtesting-qdii-premium-nasdaq100
 
 on:
-  push:
-    branches: [main]
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * *' # Runs at 00:00. (midnight)
+
 
 jobs:
 
