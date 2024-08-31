@@ -81,7 +81,7 @@ const MobileFirstLayout = ({
         {children}
       </Content>
       <Footer className="footer">
-        <Text type="secondary">&copy; {new Date().getFullYear()} {TITLE}. All rights reserved.</Text>
+        <Text type="secondary">&copy; {new Date().getFullYear()} {import.meta.env.VITE_APP_TITLE}. All rights reserved.</Text>
       </Footer>
 
     </Layout>

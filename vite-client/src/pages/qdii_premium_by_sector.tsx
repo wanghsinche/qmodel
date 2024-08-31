@@ -5,26 +5,26 @@ import type { AppRouter } from '../../../src/server/router';
 import { Collapse, Table, Badge, Space, Typography, Divider, Skeleton } from '@douyinfe/semi-ui';
 import { useMemo } from 'react';
 import type { ColumnProps } from '@douyinfe/semi-ui/lib/es/table';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 
 type ETFItem = inferRouterOutputs<AppRouter>['QDIIGrounpedBySector'][0]['etfs'][0];
 
-function ETFTableView({ etfs }: { etfs: ETFItem[] }) {
+function ETFTableView({ etfs }: { etfs: ETFItem[], loading?: boolean }) {
     const tableData: ColumnProps<ETFItem>[] = [{
         dataIndex: 'name',
         title: 'ETF名称',
         width: 120,
         render: (_, record) =>
-            <Link to={`/qdii_detail/${record.code}/${record.name}`} >
-                <Typography.Text>{record.name}  </Typography.Text>
-                <Typography.Text>{record.code}  </Typography.Text>
+            <Link to={`/qdii_detail/${record.code}`} >
+                <Typography.Text underline>{record.name}  </Typography.Text>
+                <Typography.Text >{record.code}  </Typography.Text>
             </Link>
     }, {
         dataIndex: 'price_dt',
         title: '更新日期',
         width: 120,
         render: (v, record) =>
-            <Link to={`/qdii_detail/${record.code}/${record.name}`} >
+            <Link to={`/qdii_detail/${record.code}`} >
                 <Typography.Text>{v}  </Typography.Text>
             </Link>
     }, {
@@ -32,7 +32,7 @@ function ETFTableView({ etfs }: { etfs: ETFItem[] }) {
         title: '溢价率',
         width: 80,
         render: (v, record) =>
-            <Link to={`/qdii_detail/${record.code}/${record.name}`} >
+            <Link to={`/qdii_detail/${record.code}`} >
                 <Typography.Text>{v}  </Typography.Text>
             </Link>
     }, {
@@ -40,11 +40,11 @@ function ETFTableView({ etfs }: { etfs: ETFItem[] }) {
         title: '管理费',
         width: 80,
         render: (v, record) =>
-            <Link to={`/qdii_detail/${record.code}/${record.name}`} >
+            <Link to={`/qdii_detail/${record.code}`} >
                 <Typography.Text>{v}  </Typography.Text>
             </Link>
     }]
-    return <Table columns={tableData} dataSource={etfs} pagination={false}  />
+    return <Table columns={tableData} dataSource={etfs} pagination={false} />
 }
 
 const Introduction = () => {
@@ -71,11 +71,13 @@ const Introduction = () => {
         <Typography.Paragraph>
             这种套利策略能在不承担标的资产价格波动风险的情况下,从ETF之间的溢价差异中获利。随着市场效率提高,溢价差异必然收敛,届时平仓即可实现盈利。
         </Typography.Paragraph>
-        
+
     </Typography>
 }
 
 export default function QDIIGrounpedBySector() {
+    const [query, setQuery] = useSearchParams();
+
     const { data, isValidating } = useSWR('/api/qdii_premium_by_sector', () => client.QDIIGrounpedBySector.query());
 
 
@@ -83,26 +85,27 @@ export default function QDIIGrounpedBySector() {
         return b.etfs.length - a.etfs.length
     }), [data])
 
-    if (isValidating) {
-        return <Skeleton loading style={{ width: '50vw' }} >
-            <Skeleton.Title />
-            <Skeleton.Paragraph rows={10} />
-        </Skeleton>
-    }
+    const activeKeys = query.getAll('index')
 
     return <div className='page'>
         <Introduction />
-        <Divider align="left" margin={'16px'}>QDII ETF 溢价率排名 Grouped By 标的指数</Divider>
-        <Collapse defaultActiveKey={sortedGp?.[0].index} style={{ width: '100%' }}>
-            {
-                // print the data
-                sortedGp?.map((group) => {
-                    return <Collapse.Panel itemKey={group.index} key={group.index} header={<Space>{group.index} <Badge count={group.etfs.length} countStyle={{ backgroundColor: '#aaa' }} /></Space>}>
-                        {/* <h2>{group.index}</h2> */}
-                        <ETFTableView etfs={group.etfs} />
-                    </Collapse.Panel>
-                })
-            }
-        </Collapse>
+        <Divider align="left" margin={'16px'}>QDII ETF 溢价率排名</Divider>
+        <Skeleton placeholder={
+            <Skeleton.Paragraph rows={10} style={{ width: '100%' }} />
+        } loading={isValidating}>
+            <Collapse defaultActiveKey={sortedGp?.[0].index} style={{ width: '100%' }} activeKey={activeKeys.length > 0 ? activeKeys : void 0} onChange={key => {
+                setQuery({ index: key as string[] })
+            }}>
+                {
+                    // print the data
+                    sortedGp?.map((group) => {
+                        return <Collapse.Panel itemKey={group.index} key={group.index} header={<Space>{group.index} <Badge count={group.etfs.length} countStyle={{ backgroundColor: '#aaa' }} /></Space>}>
+                            {/* <h2>{group.index}</h2> */}
+                            <ETFTableView etfs={group.etfs} />
+                        </Collapse.Panel>
+                    })
+                }
+            </Collapse>
+        </Skeleton>
     </div>
 }

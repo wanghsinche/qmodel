@@ -18,10 +18,10 @@ const router = createBrowserRouter([
   },
   {
     path: '/qdii_premium_by_sector',
-    element: <MobileFirstLayout title={TITLE} showBack={false} ><QDIIGrounpedBySector /></MobileFirstLayout>
+    element: <MobileFirstLayout title={import.meta.env.VITE_APP_TITLE} showBack={false} ><QDIIGrounpedBySector /></MobileFirstLayout>
   },
   {
-    path: '/qdii_detail/:code/:name',
+    path: '/qdii_detail/:code',
     element:<MobileFirstLayout title={'QDII 溢价详情'}><QDIIDetail /></MobileFirstLayout>
   },
   {

@@ -42,16 +42,18 @@ const getClosePriceFromSohu = async (code:string, start:Date, end:Date) => {
 
 
   const data = JSON.parse(jsonStr); // slice to remove callback wrapper
-  return data[0].hq.map((item:[string, string, string]) => [item[0].replace(/-/g, ''), parseFloat(item[1])]) as [string, number, number][];
+  // "[\"2024-08-22\",\"1.909\",\"1.892\",\"-0.002\",\"-0.11%\",\"1.889\",\"1.909\",\"1887299\",\"35819.090\",\"7.64%\"]"
+  // 高 收 变动 幅度 低 开 量 额度 溢价
+  return data[0].hq.map((item:[string, string, string]) => [item[0].replace(/-/g, ''), parseFloat(item[2]), JSON.stringify(item)]) as [string, number, string][];
 };
 
-const calculatePremium = (closePrice:[string, number, number][], netValue: [string, number][]) => {
-  const premium: { date: Date, close: number, netValue: number, premium: number }[] = [];
+const calculatePremium = (closePrice:[string, number, string][], netValue: [string, number][]) => {
+  const premium: { date: Date, close: number, netValue: number, premium: number, another: string }[] = [];
   closePrice.forEach(close => {
     netValue.forEach(net => {
       if (close[0] === net[0]) {
         let itsPremium = parseFloat((close[1] / net[1] - 1).toFixed(4));
-        premium.push({ date: parse(close[0], 'yyyyMMdd', new Date()), close: close[1], netValue: net[1], premium: itsPremium });
+        premium.push({ date: parse(close[0], 'yyyyMMdd', new Date()), close: close[1], netValue: net[1], premium: itsPremium, another: close[2] });
       }
     });
   });

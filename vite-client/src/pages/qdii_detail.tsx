@@ -10,12 +10,12 @@ import { ComponentProps } from 'react';
 enum EQuantileRank {
     LOW = 0.25,
     MEDIUM = 0.5,
-    HIGH = 0.75
+    HIGH = 0.7
 }
 
 const QuantileName = {
     [EQuantileRank.LOW]: '低风险',
-    [EQuantileRank.MEDIUM]: '中等风险',
+    [EQuantileRank.MEDIUM]: '正常',
     [EQuantileRank.HIGH]: '高风险'
 }
 
@@ -69,23 +69,15 @@ export default function QDIIDetail() {
         revalidateOnFocus: false
     });
 
-    const loadingDom = <Skeleton placeholder={
-        <>
-            <Skeleton.Paragraph rows={1} />
-            <Skeleton.Image style={{ width: '50vw', height: '30vw', margin: '10px auto' }} />
-        </>
-    } style={{ width: '50vw', margin: '10px auto' }} loading={true}></Skeleton>
-
-
 
     const histogramDataset = calculateHistogram(data?.map(item => item.premium) as number[], 0.001).map(item => ({ premium: item.binStart, count: item.count }))
 
     const lineDataset = data?.map(item => ({ date: item.date, premium: item.premium, close: item.close, netValue: item.netValue })).sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
 
 
-    const currentPremium = lineDataset?.[lineDataset.length - 1].premium
-    const latestDate = lineDataset?.[lineDataset.length - 1].date
-    const latestFormattedDate = latestDate && format(latestDate, 'yyyy-MM-dd')
+    const currentPremium = parseFloat(profileData?.premium || '0') / 100
+    // const latestDate = new Date(profileData?.last_est_dt)
+    const latestFormattedDate = profileData?.last_est_dt
 
     // find out the nearest bin start of the current premium
     const currentPremiumBin = histogramDataset?.reduce((prev, curr) => {
@@ -114,38 +106,46 @@ export default function QDIIDetail() {
         quantileColor = 'danger'
     }
 
+    const getLoadingDom = () => <Skeleton.Paragraph rows={4}/>
 
     return <div style={{ padding: '4px 16px 8px 16px', margin: '0 auto', width: '80%' }}>
 
         <Descriptions align="left" data={[
             { key: '基金名称', value: profileData?.name },
-            { key: 'QDII 代码', value: code },
-            { key: '基金档案', value: <Link to={profileData?.profile_url as string} target='_blank'>{profileData?.issuer_nm}</Link> },
+            { key: 'ETF 代码', value: code },
+            {
+                key: '基金档案', value: <Link to={profileData?.profile_url as string} target='_blank'>
+                    <Typography.Text underline style={{ color: 'var( --semi-color-text-2)' }}>{profileData?.issuer_nm}</Typography.Text>
+                </Link>
+            },
             {
                 key: '外部连接', value: <Space>
-                    <Link to={`https://fund.eastmoney.com/${code}.html`} target='_blank'>天天基金</Link>
-                    <Link to={`https://www.jisilu.cn/data/qdii/detail/${code}`} target='_blank'>集思录</Link>
+                    <Link to={`https://fund.eastmoney.com/${code}.html`} target='_blank'>
+                        <Typography.Text underline style={{ color: 'var( --semi-color-text-2)' }}>天天基金</Typography.Text>
+                    </Link>
+                    <Link to={`https://www.jisilu.cn/data/qdii/detail/${code}`} target='_blank'>
+                        <Typography.Text underline style={{ color: 'var( --semi-color-text-2)' }}> 集思录</Typography.Text></Link>
                 </Space>
             },
             { key: '数据更新日期', value: latestFormattedDate },
             { key: '当前溢价', value: currentPremium ? (currentPremium * 100).toFixed(2) + '%' : '-' },
             { key: '当前溢价分位数', value: quantile ? (quantile * 100).toFixed(2) + '%' : '-' },
-            { key: '当前溢价排名', value: <Typography.Text type={quantileColor}>{QuantileName[quantileRank]}</Typography.Text> },
+            { key: '当前溢价风险', value: <Typography.Text type={quantileColor}>{QuantileName[quantileRank]}</Typography.Text> },
         ]} />
 
         <Typography.Text >溢价直方图</Typography.Text>
-        {isValidating ? loadingDom : <ResponsiveContainer width={'100%'} height={300} >
-            <BarChart data={histogramDataset} height={300} width={500} >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="premium" name="溢价" tickCount={5} tickFormatter={value => isNaN(parseFloat(value)) ? value : `${(parseFloat(value) * 100).toFixed(2)}%`} />
-                <YAxis />
-                <Tooltip />
-                <Bar dataKey="count" fill="var( --semi-color-tertiary-light-active)" name="次数" />
-
-                <ReferenceLine x={currentPremiumBin.premium} stroke='var(--semi-color-warning)' label='当前溢价' />
-
-            </BarChart>
-        </ResponsiveContainer>}
+        <Skeleton loading={isValidating} placeholder={getLoadingDom()}>
+            <ResponsiveContainer width={'100%'} height={300} >
+                <BarChart data={histogramDataset} height={300} width={500} >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="premium" name="溢价" tickCount={5} tickFormatter={value => isNaN(parseFloat(value)) ? value : `${(parseFloat(value) * 100).toFixed(2)}%`} />
+                    <YAxis />
+                    <Tooltip />
+                    <Bar dataKey="count" fill="var( --semi-color-tertiary-light-active)" name="次数" />
+                    <ReferenceLine x={currentPremiumBin.premium} stroke='var(--semi-color-warning)' label='当前溢价' />
+                </BarChart>
+            </ResponsiveContainer>
+        </Skeleton>
 
 
 
@@ -153,37 +153,41 @@ export default function QDIIDetail() {
 
 
         <Typography.Text >历史溢价</Typography.Text>
-        {isValidating ? loadingDom : <ResponsiveContainer width={'100%'} height={300} >
-            <BarChart data={lineDataset} height={300} width={500}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="date" tickCount={5} tickFormatter={date => format(new Date(date), 'yyyy-MM-dd')} />
-                <YAxis tickFormatter={value => `${(parseFloat(value) * 100).toFixed(2)}%`} />
-                <Tooltip labelFormatter={date => format(new Date(date), 'yyyy-MM-dd')} />
-                <Legend />
-                <Bar dataKey="premium" stroke="var( --semi-color-tertiary-light-active)" name="溢价" />
-                <Brush dataKey="date" height={30} stroke="var( --semi-color-tertiary-hover)" tickFormatter={date => format(new Date(date), 'yyyy-MM-dd')} />
-                <ReferenceLine y={0} stroke="#000" />
-            </BarChart>
-
-        </ResponsiveContainer>}
+        <Skeleton loading={isValidating} placeholder={getLoadingDom()}>
+            <ResponsiveContainer width={'100%'} height={300} >
+                <BarChart data={lineDataset} height={300} width={500}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="date" tickCount={5} tickFormatter={date => format(new Date(date), 'yyyy-MM-dd')} />
+                    <YAxis tickFormatter={value => `${(parseFloat(value) * 100).toFixed(2)}%`} />
+                    <Tooltip labelFormatter={date => format(new Date(date), 'yyyy-MM-dd')} />
+                    <Legend />
+                    <Bar dataKey="premium" stroke="var( --semi-color-tertiary-light-active)" name="溢价" />
+                    <Brush dataKey="date" height={30} stroke="var( --semi-color-tertiary-hover)" tickFormatter={date => format(new Date(date), 'yyyy-MM-dd')} startIndex={lineDataset?.length ? lineDataset?.length - 60 : 0} />
+                    <ReferenceLine y={0} stroke="#000" />
+                </BarChart>
+            </ResponsiveContainer>
+        </Skeleton>
 
 
 
         <Typography.Text >历史表现</Typography.Text>
-        {isValidating ? loadingDom : <ResponsiveContainer width={'100%'} height={300} >
-            <LineChart data={lineDataset} height={300} width={500}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="date" tickCount={5} tickFormatter={date => format(new Date(date), 'yyyy-MM-dd')} />
-                <YAxis />
-                <Tooltip labelFormatter={date => format(new Date(date), 'yyyy-MM-dd')} />
-                <Legend />
-                <Line dataKey="close" stroke="var(--semi-color-tertiary)" dot={false} name="收盘价" />
-                <Line dataKey="netValue" stroke="var(--semi-color-warning)" dot={false} name="净值" />
-                <Brush dataKey="date" height={30} stroke="var( --semi-color-tertiary-hover)" tickFormatter={date => format(new Date(date), 'yyyy-MM-dd')} />
 
-            </LineChart>
 
-        </ResponsiveContainer>}
+        <Skeleton loading={isValidating} placeholder={getLoadingDom()}>
+            <ResponsiveContainer width={'100%'} height={300} >
+                <LineChart data={lineDataset} height={300} width={500}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="date" tickCount={5} tickFormatter={date => format(new Date(date), 'yyyy-MM-dd')} />
+                    <YAxis />
+                    <Tooltip labelFormatter={date => format(new Date(date), 'yyyy-MM-dd')} />
+                    <Legend />
+                    <Line dataKey="close" stroke="var(--semi-color-tertiary)" dot={false} name="收盘价" />
+                    <Line dataKey="netValue" stroke="var(--semi-color-warning)" dot={false} name="净值" />
+                    <Brush dataKey="date" height={30} stroke="var( --semi-color-tertiary-hover)" tickFormatter={date => format(new Date(date), 'yyyy-MM-dd')} startIndex={lineDataset?.length ? lineDataset?.length - 60 : 0} />
+                </LineChart>
+            </ResponsiveContainer>
+        </Skeleton>
+
 
     </div>
 }
