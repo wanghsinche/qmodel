@@ -1,11 +1,9 @@
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import useSWR from 'swr';
 import { client } from '../client';
-import { subDays, format } from 'date-fns';
-import { Bar, BarChart, Brush, CartesianGrid, Legend, Line, LineChart, ReferenceDot, ReferenceLine, ResponsiveContainer, Scatter, Tooltip, XAxis, YAxis } from 'recharts';
-import { Descriptions, Space, Table, Typography } from '@douyinfe/semi-ui';
+import { CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+import { Table, Typography } from '@douyinfe/semi-ui';
 import { Skeleton } from '@douyinfe/semi-ui';
-import { ComponentProps } from 'react';
 import type { inferRouterOutputs } from '@trpc/server';
 import { AppRouter } from '../../../src/server/router';
 
