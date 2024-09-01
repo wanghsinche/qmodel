@@ -108,7 +108,7 @@ export default function QDIIDetail() {
 
     const getLoadingDom = () => <Skeleton.Paragraph rows={4}/>
 
-    return <div style={{ padding: '4px 16px 8px 16px', margin: '0 auto', width: '80%' }}>
+    return <div style={{ padding: '4px 4px 8px 4px', margin: '0 auto', width: '90%' }}>
 
         <Descriptions align="left" data={[
             { key: '基金名称', value: profileData?.name },

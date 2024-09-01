@@ -90,7 +90,7 @@ export default function QDIIGrounpedBySector() {
     return <div className='page'>
         <Introduction />
         <Space  style={{width: '100%', justifyContent: 'center'}}>
-            <Link to={'/qdii_arbitrary/nasdaq100'}><Button type="primary">查看策略表现</Button></Link>
+            <Link to={'/qdii_arbitrary/nasdaq100'}><Button type="primary" size='large'>查看策略表现</Button></Link>
         </Space>
         <Divider align="left" margin={'16px'}>QDII ETF 溢价率排名</Divider>
         <Skeleton placeholder={

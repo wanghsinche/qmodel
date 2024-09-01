@@ -126,7 +126,7 @@ export default function LoginAvatar() {
             <Button type="tertiary" onClick={logout} theme='borderless' >⏏</Button>
             <Avatar size="small" color='red'>{profile?.id.slice(0, 2)}</Avatar>
         </Space>}
-        {notLogin && <Avatar size="small" color='grey' onClick={() => setShowLogin(true)}>N</Avatar>}
+        {notLogin && <Avatar size="small" color='grey' onClick={() => setShowLogin(true)}>Q</Avatar>}
         <LoginModal onSuccess={() => mutate()} visible={showLogin} onClose={() => setShowLogin(false)} />
     </div>
 }

@@ -5,11 +5,28 @@ import { getKV } from '../store';
 
 const repo = 'wanghsinche/qmodel';
 
+function fetchWithUA(url: string, init: RequestInit = {}) {
+    const {headers, ...rest} = init;
+    return fetch(url, {
+        headers: {
+            'User-Agent': 'cloudflare-worker',
+            ...headers
+        },
+        ...rest
+    });
+}
+
 // Construct the API URL to fetch the releases
 async function getLatestRelease(index: string) {
     const apiUrl = `https://api.github.com/repos/${repo}/releases`;
 
-    const response = await fetch(apiUrl);
+    const response = await fetchWithUA(apiUrl);
+
+    if (!response.ok) {
+        console.error(`Failed to fetch releases: ${response.status} ${response.statusText} ${await response.text()}`);
+        throw new Error('Failed to fetch releases');
+    }
+
     const releaseList: Release[] = await response.json();
 
     // find out the latest release starts with index
@@ -21,7 +38,7 @@ async function getLatestRelease(index: string) {
     if (latestRelease) {
         const allDownloads = await Promise.all(latestRelease.assets
             .filter((asset) => asset.name.endsWith('.csv')).map(async (asset) => {
-                const response = await fetch(asset.browser_download_url);
+                const response = await fetchWithUA(asset.browser_download_url);
                 const text = await response.text();
                 return {
                     name: asset.name,

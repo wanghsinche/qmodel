@@ -27,7 +27,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/qdii_arbitrary/:index',
-    element:<MobileFirstLayout title={'策略表现'}><QDIIArbitrary /></MobileFirstLayout>
+    element:<MobileFirstLayout title={'策略详情'}><QDIIArbitrary /></MobileFirstLayout>
   },
 
   {
