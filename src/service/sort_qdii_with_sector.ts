@@ -15,10 +15,11 @@ interface IGroupItem {
     profile_url: string;
     issuer_nm: string;
 }
+const prefix = 'QDII_jisilu_';
 
 export async function getQDIIAbstract(){
     const today = new Date().toDateString()
-    const dataPath = `${today}_QDII_jisilu`;
+    const dataPath = `${prefix}${today}`;
 
     let qdiiData = await getKV().get(dataPath);
     if (!qdiiData) {

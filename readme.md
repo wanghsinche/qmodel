@@ -10,3 +10,8 @@
 - [x] unified layout page
 - [x] QDII溢价详细页面
 - [ ] ~~消息推送~~
+
+### V0.2
+- [x] 后台策略backtesting
+- [ ] 展示策略结果
+- [ ] 提供邮件订阅

@@ -130,11 +130,12 @@ trade_analyzer = strategy.analyzers.trades.get_analysis()
 returns = strategy.analyzers.returns.get_analysis()
 
 with open('other_stats.csv', 'w') as other_stats:
-    other_stats.write(f"""Data: {start_date} - {end_date}
-Sharpe Ratio: {round(sharpe_ratio, 2)}
-Total Trades: {trade_analyzer['total']}
-Total Returns: {round(returns['rtot'] * 100, 2)}%
-Ratio among all: {round((best_ratio - 1) * 100, 2)} , {round((wrost_ratio - 1) * 100, 2)}
+    other_stats.write(f"""Item, Value
+Data, {start_date} - {end_date}
+Sharpe Ratio, {round(sharpe_ratio, 2)}
+Total Trades, {trade_analyzer['total']}
+Total Returns, {round(returns['rtot'] * 100, 2)}%
+Ratio among all, {round((best_ratio - 1) * 100, 2)} , {round((wrost_ratio - 1) * 100, 2)}
 """)
 
 

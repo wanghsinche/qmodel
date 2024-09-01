@@ -1,4 +1,5 @@
 import { accountValidator, checkAccountUsed, createUserAccount, loginAccount } from '../service/account_service';
+import { getBacktestingData } from '../service/backtesting';
 import { getETFProfile, getPremiumDetail } from '../service/premium_detail_service';
 import { groupQDII, sortETFGroup } from '../service/sort_qdii_with_sector';
 import { createCheckoutSession } from '../service/stripe_payment';
@@ -43,6 +44,9 @@ export const appRouter = router({
   }),
   getQDIIProfile: publicProcedure.input(z.string()).query(async ({ input }) => {
     return await getETFProfile(input)
+  }),
+  getBacktestingData: publicProcedure.input(z.string()).query(async ({ input }) => {
+    return await getBacktestingData(input)
   })
   // Add more procedures here
   // ...

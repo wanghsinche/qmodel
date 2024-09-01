@@ -4,9 +4,9 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start:cloudflare": "wrangler dev",
-    "dev:trpc": "tsx watch src/server/standalone.ts"
+    "dev:trpc": "tsx watch src/server/standalone.ts",
+    "test":"vitest"
   },
   "author": "",
   "license": "ISC",
@@ -16,8 +16,10 @@
     "@cloudflare/workers-types": "^4.20240806.0",
     "@types/cors": "^2.8.17",
     "@types/node": "^22.2.0",
+    "@vitest/ui": "^2.0.5",
     "tsx": "^4.17.0",
     "typescript": "^5.5.4",
+    "vitest": "^2.0.5",
     "wrangler": "^3.70.0"
   },
   "dependencies": {
