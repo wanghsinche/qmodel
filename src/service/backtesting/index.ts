@@ -15,7 +15,7 @@ async function getLatestRelease(index: string) {
     // find out the latest release starts with index
     const latestRelease = releaseList
         .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
-        .find(release => release.name.startsWith(index));
+        .find(release => release.name.includes(index));
 
     // download assets
     if (latestRelease) {
@@ -41,9 +41,10 @@ function readCSVAndConvertToJSON(text:string) {
     const result = [] as Record<string, string>[] ;
     for (let i = 1; i < lines.length; i++) {
         const obj = {} as Record<string, string>;
+        if (lines[i].trim() === '') continue
         const currentLine = lines[i].split(',');
         for (let j = 0; j < headers.length; j++) {
-            obj[headers[j]] = currentLine[j];
+            obj[headers[j].trim()] = currentLine[j]?.trim();
         }
         result.push(obj);
     }

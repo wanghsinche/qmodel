@@ -133,7 +133,7 @@ with open('other_stats.csv', 'w') as other_stats:
     other_stats.write(f"""Item, Value
 Data, {start_date} - {end_date}
 Sharpe Ratio, {round(sharpe_ratio, 2)}
-Total Trades, {trade_analyzer['total']}
+Total Trades, total {trade_analyzer['total']['total']} open {trade_analyzer['total']['open']} closed {trade_analyzer['total']['closed']}
 Total Returns, {round(returns['rtot'] * 100, 2)}%
 Ratio among all, {round((best_ratio - 1) * 100, 2)} , {round((wrost_ratio - 1) * 100, 2)}
 """)
