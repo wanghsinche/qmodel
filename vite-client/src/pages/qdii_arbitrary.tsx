@@ -78,7 +78,7 @@ function LatestOrder({ orders }: { orders?: IMyOrder }) {
             {latest?.datetime}
         </Typography.Text>
         <Typography.Text type={latest?.direction.toUpperCase() === 'BUY' ? 'success' : 'warning'}>{direction}</Typography.Text>
-        <Link to={profile?.profile_url || ''} target='_blank'><Typography.Text underline style={{ color: 'var( --semi-color-text-2)' }} >
+        <Link to={`/qdii_detail/${latest?.code}`}><Typography.Text underline style={{ color: 'var( --semi-color-text-2)' }} >
             {profile?.name}
         </Typography.Text></Link>
         <br />
