@@ -98,9 +98,9 @@ export async function getBacktestingData(index = 'nasdaq100') {
     }
 
     return {
-        myOrders: data.find(el=>el.name === `${index}-myorders.csv`)?.csv,
-        myStats: data.find(el=>el.name === `${index}-mystats.csv`)?.csv,
-        otherStats: data.find(el=>el.name === `${index}-other_stats.csv`)?.csv
+        myOrders: data.find(el=>el.name === `${index}-myorders.csv`)!.csv,
+        myStats: data.find(el=>el.name === `${index}-mystats.csv`)!.csv,
+        otherStats: data.find(el=>el.name === `${index}-other_stats.csv`)!.csv
     }
 }
 

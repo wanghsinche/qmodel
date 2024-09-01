@@ -2,7 +2,7 @@ import useSWR from 'swr';
 import { client } from '../client';
 import type { inferRouterOutputs } from '@trpc/server';
 import type { AppRouter } from '../../../src/server/router';
-import { Collapse, Table, Badge, Space, Typography, Divider, Skeleton } from '@douyinfe/semi-ui';
+import { Collapse, Table, Badge, Space, Typography, Divider, Skeleton, Button } from '@douyinfe/semi-ui';
 import { useMemo } from 'react';
 import type { ColumnProps } from '@douyinfe/semi-ui/lib/es/table';
 import { Link, useSearchParams } from 'react-router-dom';
@@ -69,7 +69,7 @@ const Introduction = () => {
             </li>
         </ul>
         <Typography.Paragraph>
-            这种套利策略能在不承担标的资产价格波动风险的情况下,从ETF之间的溢价差异中获利。随着市场效率提高,溢价差异必然收敛,届时平仓即可实现盈利。
+            随着市场效率提高,溢价差异必然收敛,届时平仓即可实现盈利。由于A股市场无法直接做空,这种套利策略需要一直持有仓位,因此是一种跑赢目标指数的alpha策略.
         </Typography.Paragraph>
 
     </Typography>
@@ -89,6 +89,9 @@ export default function QDIIGrounpedBySector() {
 
     return <div className='page'>
         <Introduction />
+        <Space  style={{width: '100%', justifyContent: 'center'}}>
+            <Link to={'/qdii_arbitrary/nasdaq100'}><Button type="primary">查看策略表现</Button></Link>
+        </Space>
         <Divider align="left" margin={'16px'}>QDII ETF 溢价率排名</Divider>
         <Skeleton placeholder={
             <Skeleton.Paragraph rows={10} style={{ width: '100%' }} />

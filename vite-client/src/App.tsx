@@ -9,6 +9,7 @@ import { SWRConfig } from "swr";
 import { Toast } from "@douyinfe/semi-ui";
 import QDIIDetail from "./pages/qdii_detail";
 import MobileFirstLayout from "./components/MobileLayout";
+import QDIIArbitrary from "./pages/qdii_arbitrary";
 // import Logo from "./components/logo";
 
 const router = createBrowserRouter([
@@ -24,6 +25,11 @@ const router = createBrowserRouter([
     path: '/qdii_detail/:code',
     element:<MobileFirstLayout title={'QDII 溢价详情'}><QDIIDetail /></MobileFirstLayout>
   },
+  {
+    path: '/qdii_arbitrary/:index',
+    element:<MobileFirstLayout title={'策略表现'}><QDIIArbitrary /></MobileFirstLayout>
+  },
+
   {
     path: '/payment_result',
     element: <div>Payment Result</div>
