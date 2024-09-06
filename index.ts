@@ -1,6 +1,7 @@
 import { getAssetFromKV, serveSinglePageApp } from '@cloudflare/kv-asset-handler';
 import manifestJSON from '__STATIC_CONTENT_MANIFEST';
 import clouldflareAdapter from './src/server/cloudflare-worker';
+import { scheduleCleanAll } from './src/service/schedule_clean'
 
 const assetManifest = JSON.parse(manifestJSON);
 
@@ -38,5 +39,10 @@ export default {
         statusText: 'Internal Error',
       });
     }
+  },
+
+  async scheduled() {
+    console.log('scheduled');
+    await scheduleCleanAll();
   },
 };

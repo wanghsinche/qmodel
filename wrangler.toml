@@ -17,4 +17,5 @@ id = "69ae5ba02b1f44a1aa756bed70fcfba6"
 binding = "accounts_db"
 id="5e29d399c49d43089eaa55719080bd6a"
 
-
+[triggers]
+crons = ["0 0 * * *"]
