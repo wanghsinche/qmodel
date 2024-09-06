@@ -12,7 +12,9 @@ async function getFromCacheOrUrl(url:string) {
         return cache
     } else {
         const text = await fetch(url).then(res=>res.text());
-        getKV().put(`${prefix}${today}${url}`, text);
+        getKV().put(`${prefix}${today}${url}`, text, {
+          expirationTtl: 60 * 60 * 24
+        });
         return text
     }
 }

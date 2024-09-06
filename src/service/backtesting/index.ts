@@ -109,9 +109,9 @@ export async function getBacktestingData(index = 'nasdaq100') {
     } catch (error) {
         console.info(error)
         data = await getBacktestingDataFromRemote(index);
-        await kv.put(`${index}-myorders.csv::${today}`, JSON.stringify(data.find(el=>el.name === `${index}-myorders.csv`)?.csv))
-        await kv.put(`${index}-mystats.csv::${today}`, JSON.stringify(data.find(el=>el.name === `${index}-mystats.csv`)?.csv))
-        await kv.put(`${index}-other_stats.csv::${today}`, JSON.stringify(data.find(el=>el.name === `${index}-other_stats.csv`)?.csv))
+        await kv.put(`${index}-myorders.csv::${today}`, JSON.stringify(data.find(el=>el.name === `${index}-myorders.csv`)?.csv), { expiration: 60 * 60 * 24  })
+        await kv.put(`${index}-mystats.csv::${today}`, JSON.stringify(data.find(el=>el.name === `${index}-mystats.csv`)?.csv), { expiration: 60 * 60 * 24  })
+        await kv.put(`${index}-other_stats.csv::${today}`, JSON.stringify(data.find(el=>el.name === `${index}-other_stats.csv`)?.csv), { expiration: 60 * 60 * 24  })
     }
 
     return {

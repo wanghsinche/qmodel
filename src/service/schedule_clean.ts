@@ -8,12 +8,12 @@ async function scheduleClean(prefix: string) {
         // Fetch all keys with the specified prefix
         const listResponse = await namespace.list({
             prefix: prefix,
+            limit: 500
         });
-
         // Delete each key found
         for (const key of listResponse.keys) {
             await namespace.delete(key as unknown as string);
-            console.log(`Deleted key: ${key}`);
+            console.log(`Deleted key: ${key?.name}`);
         }
         
         console.log(`Successfully cleared all KV items with prefix: ${prefix}`);

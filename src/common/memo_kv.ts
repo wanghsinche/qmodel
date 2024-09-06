@@ -4,7 +4,7 @@ export default class MemoKV {
 
     store: Record<string, string> = {};
 
-    put(key: string, value: string): Promise<void> {
+    put(key: string, value: string, _options?: KVNamespaceListOptions): Promise<void> {
         const store = this.store;
         store[key] = value;
         this.store = store;

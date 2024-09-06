@@ -24,7 +24,9 @@ export async function getQDIIAbstract(){
     let qdiiData = await getKV().get(dataPath);
     if (!qdiiData) {
         const result = await retrieveQDIIFromJiSiLu();
-        await getKV().put(dataPath, JSON.stringify(result)||'');
+        await getKV().put(dataPath, JSON.stringify(result)||'', {
+            expirationTtl: 60 * 60 * 24
+        });
         qdiiData = await getKV().get(dataPath);
     }
     const data = JSON.parse(qdiiData as string);

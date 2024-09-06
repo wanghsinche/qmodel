@@ -2,6 +2,7 @@ import { getAssetFromKV, serveSinglePageApp } from '@cloudflare/kv-asset-handler
 import manifestJSON from '__STATIC_CONTENT_MANIFEST';
 import clouldflareAdapter from './src/server/cloudflare-worker';
 import { scheduleCleanAll } from './src/service/schedule_clean'
+import { initLoadEnv } from './src/service/store';
 
 const assetManifest = JSON.parse(manifestJSON);
 
@@ -41,7 +42,8 @@ export default {
     }
   },
 
-  async scheduled() {
+  async scheduled(_event, env, _ctx) {
+    initLoadEnv(env);
     console.log('scheduled');
     await scheduleCleanAll();
   },
